@@ -6,6 +6,7 @@ dotenv.config();
 
 const connectDB = require("./server"); // Import the MongoDB connection function
 const config = require("./src/configaration/config");
+const userRouter=require("./src/domain/user_section/route/user_route")
 
 const app = express();
 const port = config.port
@@ -14,6 +15,7 @@ const port = config.port
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: true, credentials: true }));
+app.use(process.env.BASEURL,userRouter)
 
 // Connect to the database
 connectDB();
