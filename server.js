@@ -1,8 +1,14 @@
-const mongoose =require("mongoose")
-mongoose.connect("mongodb+srv://Rahul:Rahul123@cluster0.1vx1l.mongodb.net/crud")
-mongoose.connection.on("connected",connected=>{
-    console.log("connected with Database");
-})
-mongoose.connection.on("error",error=>{
-    console.log("failed to connect with database");
-});
+const mongoose = require("mongoose");
+const config   = require("./src/configaration/config")
+
+const connectDB = async () => {
+    try {
+        await mongoose.connect(config.mongoURI);
+        console.log("Connected to MongoDB");
+      } catch (err) {
+        console.error("Failed to connect to MongoDB", err);
+        process.exit(1);
+      }
+};
+
+module.exports = connectDB;
