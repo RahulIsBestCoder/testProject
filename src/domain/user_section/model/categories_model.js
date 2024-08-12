@@ -9,8 +9,26 @@ const categoriesSchema = new mongoose.Schema(
             unique: true
         }
     }, {
-        timestamps: true
-    }
+    timestamps: true
+}
 )
-const Categories = mongoose.model("categories", categoriesSchema);
-module.exports = Categories
+const      Categories = mongoose.model("categories", categoriesSchema);
+
+
+const categoriesList = async () => {
+    return new Promise((resolve,reject)=>{
+        Categories.aggregate([
+            { $match: {} }
+        ]).then((response)=>{
+            resolve(response)
+        }).catch((error)=>{
+            reject(error)
+        })
+    })
+}
+
+
+module.exports = {
+    Categories,
+    categoriesList
+}

@@ -1,15 +1,18 @@
 const jwt = require("jsonwebtoken")
+const { getErrorMessage } = require("./common_helper")
 const AuthValidation=(req,res)=>{
     const AuthToken=req.header(Authorization).replace("bearer","").trim()
     jwt.verify(AuthToken,process.env.JWT_SECRET,((err,value)=>{
         if(err){
-            res.status(401).send("Unauthorized")
+            getErrorMessage(res,"error",401)
         }
     }))
 }
-module.exports=AuthValidation
 const AuthPayloadCheck=(req,res)=>{
     const AuthToken=req.header(Authorization).replace("bearer","").trim()
     const payLoad=jwt.decode(AuthToken)
 }
-module.exports=AuthPayloadCheck
+module.exports={
+    AuthValidation,
+    AuthPayloadCheck
+}
