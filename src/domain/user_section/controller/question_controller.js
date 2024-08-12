@@ -1,5 +1,5 @@
 const { getSuccessMessage, getErrorMessage } = require("../../../helper/common_helper");
-const { catergorListService } = require("../service/category_service");
+const { questionListService } = require("../service/question_service");
 
 const questionListController = async (req, res) => {
     try {

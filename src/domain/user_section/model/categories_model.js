@@ -7,12 +7,12 @@ const categoriesSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true
-        }
+        },
     }, {
     timestamps: true
 }
 )
-const      Categories = mongoose.model("categories", categoriesSchema);
+const Categories = mongoose.model("categories", categoriesSchema);
 
 
 const categoriesList = async () => {
