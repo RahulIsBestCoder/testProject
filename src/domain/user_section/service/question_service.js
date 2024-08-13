@@ -1,4 +1,4 @@
-const { createTextFile } = require("../../../helper/common_helper")
+const { createTextFile, removeFile } = require("../../../helper/common_helper")
 const { groupQuestionsByCategory,bulkCreate } = require("../model/question_model")
 const fs = require('fs');
 const csv = require('csv-parser');
@@ -41,10 +41,14 @@ exports.readAndCheckCSV = async (filePath) => {
                         })
 
                     });
+                    console.log(rowData);
+                    
                     rowData.option=options
                     rowData.categories=categoriesdata
                     data.push(rowData);
+                    console.log(rowData);
                 })
+                
                 .on('end', () => {
                     resolve();
                 })
@@ -69,6 +73,9 @@ exports.questionCreateService=async(req,res)=>{
      const filePath=req.file.path 
      const csvdata=await this.readAndCheckCSV(filePath)
      const questionListData= await bulkCreate(csvdata.successdata,filePath)
+     if (questionListData &&filePath && questionListData) {
+        removeFile(filePath)
+    }
      return questionListData
     } catch (error) {
         throw error

@@ -21,9 +21,15 @@ exports.userLoginService = async (req, res) => {
         throw error;
     }
 }
+exports.validBody = (reqData, res) => {
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>.", reqData);
+
+    
+};
 
 exports.userProfileService = async (req, res) => {  
     try {
+       
         const user = await checkValidId(req.params.id)
         if (!user) {
             throw new Error( "User id Invalid")
@@ -36,14 +42,20 @@ exports.userProfileService = async (req, res) => {
 
 exports.updateOrCreateUserService = async (req,res)=>{
     try {
-        const id=req.params.id
-        const oldUserdata=await checkValidId(id)
-        req.body.profilePic=req.file?.path ?? oldUserdata.profilePic
-        const useData=await updateUser(id,req.body)
-        if(oldUserdata.profilePic && req.file && useData){
-            removeFile(oldUserdata.profilePic)
+        if (req?.body?.name && !/^[A-Za-z]+$/.test(req.body.name)) {
+            return "Invalid Name"
+        } else if (req.body.phone && req.body.phone.length !== 10) {
+            return "Invalid phone"
+        } else {
+            const id = req.params.id
+            const oldUserdata = await checkValidId(id)
+            req.body.profilePic = req.file?.path ?? oldUserdata.profilePic
+            const useData = await updateUser(id, req.body)
+            if (oldUserdata.profilePic && req.file && useData) {
+                removeFile(oldUserdata.profilePic)
+            }
+            return useData
         }
-        return useData
     } catch (error) {
         throw error;
     }

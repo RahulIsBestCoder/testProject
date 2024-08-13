@@ -18,7 +18,7 @@ router
 .all(methodNotAllowed)
 
 middleWare=[ 
-// AuthValidation,
+AuthValidation,
 ]
 router
 .route("/:id")
@@ -27,9 +27,9 @@ router
 
 
 middleWare=[
-    // AuthValidation,
-    // validUpdateRequest(),
-    // checkforerrors
+    AuthValidation,
+    validUpdateRequest,
+    checkforerrors
 ]
 router
 .route("/update/:id")

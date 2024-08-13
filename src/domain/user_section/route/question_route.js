@@ -10,8 +10,9 @@ const methodNotAllowed = (req, res, next) =>{ return getErrorMessage(res,"error"
 let middleWare=[]
 
 middleWare=[
-    // validLoginRequest(),
-    // checkforerrors
+    AuthValidation,
+    validLoginRequest(),
+    checkforerrors
 ]
 router
 .route("/list")
@@ -19,8 +20,7 @@ router
 .all(methodNotAllowed)
 
 middleWare=[
-    // validLoginRequest(),
-    // checkforerrors
+    AuthValidation,
 ]
 router
 .route("/create")

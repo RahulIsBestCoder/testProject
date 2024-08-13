@@ -13,6 +13,16 @@ exports.validLoginRequest = () => {
     ];
 }
 
+exports.validUpdateRequest = () => { 
+    return [
+        check('name')
+            .isAlpha().withMessage('name must be a string'),
+
+        check('phone')
+            .isNumeric().withMessage('Phone number must be numeric')
+            .isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 digits'),
+    ]
+}
 
 exports.checkforerrors = async (req, res, next) => {
     const errors = validationResult(req);

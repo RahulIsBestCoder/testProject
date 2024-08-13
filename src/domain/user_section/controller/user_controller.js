@@ -21,7 +21,7 @@ const userLoginController = async (req, res) => {
 const userProfileController = async (req, res) => {
   try {
     const userData = await userProfileService(req, res);
-    if (userData.name) {
+    if (userData) {
         getSuccessMessage(res, 200, userData);
     }else{
         getErrorMessage(res,"error", 400,userData);
