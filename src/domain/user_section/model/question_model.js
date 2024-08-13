@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const {Categories}=require("./categories_model")
+const {Categories}=require("./categories_model");
+const { removeFile } = require("../../../helper/common_helper");
 
 
 const questionSchema = new mongoose.Schema({
@@ -15,12 +16,16 @@ const questionSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    categories: [
-        {
+    categories: [{
+        category_id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'categories'
-        }
-    ]
+            required: true
+        },
+        category_name: {
+            type: String,
+            required: true
+        },
+    }]
 }, {
     timestamps: true
 }
@@ -62,9 +67,22 @@ const groupQuestionsByCategory = async () => {
     }
 };
 
+const bulkCreate = (args,path) => {
+  return new Promise((resolve, reject) => {
+      Questions.insertMany(args)
+          .then(data => {
+            removeFile(path)
+              resolve(data);
+          })
+          .catch(error => {
+              reject(error);
+          });
+  });
+};
 
 
 module.exports = {
     Questions,
-    groupQuestionsByCategory
+    groupQuestionsByCategory,
+    bulkCreate
 }

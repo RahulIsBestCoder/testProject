@@ -79,6 +79,41 @@ exports.multerHelper = () => {
 
 }
 
+exports.multerHelperCsv = () => {
+    const multer = require('multer');
+    const path = require('path');
+
+    // Set up storage configuration
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'public/csv/');
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + path.extname(file.originalname));
+        }
+    });
+
+    // File filter to allow only images
+    const fileFilter = (req, file, cb) => {
+        const allowedTypes = /csv/;
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = allowedTypes.test(file.mimetype);
+
+        if (extname && mimetype) {
+            return cb(null, true);
+        } else {
+            cb('Error: csv Only!');
+        }
+    };
+
+    return multer({
+        storage: storage,
+        fileFilter: fileFilter,
+        limits: { fileSize: 1024 * 1024 * 200 }
+    });
+
+}
+
 exports.removeFile = (filePath) => {
     return new Promise((resolve, reject) => {
         fs.unlink(filePath, (err) => {
@@ -92,4 +127,23 @@ exports.removeFile = (filePath) => {
         });
     });
 };
-
+exports.createTextFile=(filePath,data)=>{
+    const date=new Date()
+    const studentData = [...data];
+    const separator = ' | ';
+    const headers = Object.keys(studentData[0]);
+    const columns = [];
+    columns.push(headers.join(separator)); 
+    
+    for (const student of studentData) {
+        const row = [];
+        for (const key of headers) {
+          row.push(`${student[key]}`.padEnd(key.toString().length)); 
+        }
+        columns.push(row.join(separator)); 
+      }
+    
+    const fileContent = columns.join('\n');
+        fs.writeFileSync(filePath.replace("fileName",date.toISOString().replace(/\s+/g, '-')), fileContent);
+          return filePath.replace("fileName",date.toISOString().replace(/\s+/g, '-'))
+}
