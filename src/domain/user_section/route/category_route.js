@@ -10,8 +10,7 @@ const methodNotAllowed = (req, res, next) =>{ return getErrorMessage(res,"error"
 let middleWare=[]
 
 middleWare=[
-    // validLoginRequest(),
-    // checkforerrors
+    AuthValidation
 ]
 router
 .route("/list")

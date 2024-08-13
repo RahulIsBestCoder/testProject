@@ -1,4 +1,4 @@
-exports.checkforerrors = async (req , res , next ) => {
+exports.checkforerrors = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         let response_status = {};
@@ -15,9 +15,9 @@ exports.checkforerrors = async (req , res , next ) => {
         response_data.publish = this.api_var;
 
         if (errorVal[0].msg == 'Please update your app.') {
-            getErrorMessage(res,"error",401)
+            getErrorMessage(res, "error", 401)
         } else {
-            getErrorMessage(res,"error",400)
+            getErrorMessage(res, "error", 400)
         }
         res.send({ response: response_data });
     } else {

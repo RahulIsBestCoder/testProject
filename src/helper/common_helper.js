@@ -1,7 +1,7 @@
-const helperConfig =require("../configaration/helper_config")
-const fs =require("fs")
+const helperConfig = require("../configaration/helper_config")
+const fs = require("fs")
 
-exports.getErrorMessage = (res,errorData,statusCode, errorResponse) => {
+exports.getErrorMessage = (res, errorData, statusCode, errorResponse) => {
     const responseMessage = {
         [helperConfig.HTTP_RESPONSE_BAD_REQUEST]: "Bad Request",
         [helperConfig.HTTP_RESPONSE_UNAUTHORIZED]: "Unauthorized",
@@ -16,19 +16,19 @@ exports.getErrorMessage = (res,errorData,statusCode, errorResponse) => {
         statusCode: statusCode,
         message: defaultMessage,
         // Optional error response
-        ...(errorResponse && { error: errorResponse }) 
+        ...(errorResponse && { error: errorResponse })
     };
-    
-    if (process.env.ERRORCONSOLE =="true") {
+
+    if (process.env.ERRORCONSOLE == "true") {
         const error = new Error();
         console.log("Stack Trace:", error.stack);
         console.log("Error Response:", errorData);
     }
-    
+
     res.status(statusCode).send(response);
 };
 
-exports.getSuccessMessage=(res,statusCode, data)=>{
+exports.getSuccessMessage = (res, statusCode, data) => {
     const responseMessage = {
         [helperConfig.HTTP_RESPONSE_OK_NO_CONTENT]: "Success with no content",
         [helperConfig.HTTP_RESPONSE_OK]: "Successful",
@@ -37,8 +37,8 @@ exports.getSuccessMessage=(res,statusCode, data)=>{
     const defaultMessage = responseMessage[statusCode] || "Unknown";
     const response = {
         statusCode: statusCode,
-        message:defaultMessage,
-       ...(data&& {data:data})   
+        message: defaultMessage,
+        ...(data && { data: data })
     };
 
     res.status(200).send(response);
@@ -118,32 +118,30 @@ exports.removeFile = (filePath) => {
     return new Promise((resolve, reject) => {
         fs.unlink(filePath, (err) => {
             if (err) {
-                // console.error(`Error removing file at ${filePath}:`, err);
                 reject(new Error(`Failed to remove file: ${err.message}`));
             } else {
-                // console.log(`File removed successfully: ${filePath}`);
                 resolve();
             }
         });
     });
 };
-exports.createTextFile=(filePath,data)=>{
-    const date=new Date()
+exports.createTextFile = (filePath, data) => {
+    const date = new Date()
     const studentData = [...data];
     const separator = ' | ';
     const headers = Object.keys(studentData[0]);
     const columns = [];
-    columns.push(headers.join(separator)); 
-    
+    columns.push(headers.join(separator));
+
     for (const student of studentData) {
         const row = [];
         for (const key of headers) {
-          row.push(`${student[key]}`.padEnd(key.toString().length)); 
+            row.push(`${student[key]}`.padEnd(key.toString().length));
         }
-        columns.push(row.join(separator)); 
-      }
-    
+        columns.push(row.join(separator));
+    }
+
     const fileContent = columns.join('\n');
-        fs.writeFileSync(filePath.replace("fileName",date.toISOString().replace(/\s+/g, '-')), fileContent);
-          return filePath.replace("fileName",date.toISOString().replace(/\s+/g, '-'))
+    fs.writeFileSync(filePath.replace("fileName", date.toISOString().replace(/\s+/g, '-')), fileContent);
+    return filePath.replace("fileName", date.toISOString().replace(/\s+/g, '-'))
 }

@@ -11,7 +11,6 @@ let middleWare=[]
 
 middleWare=[
     AuthValidation,
-    validLoginRequest(),
     checkforerrors
 ]
 router

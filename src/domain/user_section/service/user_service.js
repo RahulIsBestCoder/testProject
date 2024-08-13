@@ -21,11 +21,6 @@ exports.userLoginService = async (req, res) => {
         throw error;
     }
 }
-exports.validBody = (reqData, res) => {
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>.", reqData);
-
-    
-};
 
 exports.userProfileService = async (req, res) => {  
     try {
